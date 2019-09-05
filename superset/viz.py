@@ -600,6 +600,33 @@ class TableViz(BaseViz):
         )
 
 
+class TimeSeriesScatterViz(BaseViz):
+    viz_type = 'time_series_scatter'
+    verbose_name = "Time Series Scatter"
+    sort_series = False
+    is_timeseries = True
+ 
+    def query_obj(self):
+        d = super(TimeSeriesScatterViz, self).query_obj()
+        fd = self.form_data #form_data中包含界面左侧组件内容
+ 
+        if not fd.get('all_columns'): #这个字段对应×××组件，不为空
+            raise Exception('Choose Columns')
+ 
+        if fd.get('all_columns'):
+            d['columns'] = fd.get('all_columns') # all_columns是左侧组件名，后面会提到
+            # 这里的例子非常简单，其实可以做很多事
+        return d
+ 
+    def get_data(self, df):
+        print(df)
+        # df是pandas的DataFrame类型
+        # 这里的例子非常简单，其实可以做很多事
+        data = np.array(df).tolist() #假设数据很简单，不需要做别的处理
+        # 如果除了绘图用的数据还有别的信息，可以构造一个字典来返回
+        # data = {'plot_data':plot_data,'other_info':other_info}
+        return data
+
 class TimeTableViz(BaseViz):
 
     """A data table with rich time-series related columns"""
